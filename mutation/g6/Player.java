@@ -44,6 +44,7 @@ public class Player extends mutation.sim.Player {
         for (int i = 0; i < 50000; ++ i) {
             String genome = randomString();
             String mutated = console.Mutate(genome);
+            if (console.getNumberOfMutations() == 0) continue;
             char[] input = genome.toCharArray();
             char[] output = mutated.toCharArray();
             //System.out.println(output.length);
@@ -82,6 +83,7 @@ public class Player extends mutation.sim.Player {
         return result;
     }
 
+    //Based on our left and right map, we conclude the guessed mutagen and return it.
     private Mutagen getResult(int num, boolean boo) {
         Mutagen result = new Mutagen();
         Map<String, Integer> sortedMap = sortByValue(cumRight);
@@ -109,6 +111,7 @@ public class Player extends mutation.sim.Player {
         return result;
     }
 
+    //Combine possible patterns by unioning them
     private String combineString(List<String> input) {
         if(input.size() == 0) return "";
         int size = input.get(0).length();
@@ -133,6 +136,7 @@ public class Player extends mutation.sim.Player {
         return output.substring(0, output.length() - count * 5);
     }
 
+    //Get average frequency of the for the list of integer.
     private int getAverageNum(List<Integer> input) {
         if(input.size() == 0) return 0;
         int output = 0;
@@ -150,6 +154,7 @@ public class Player extends mutation.sim.Player {
         return output;
     }
 
+    //Return first num elements from input.
     private List<String> getList(List<String> input, int num) {
         List<String> output = new ArrayList<>();
         for(int i = 0; i < num; i++) {
@@ -158,6 +163,7 @@ public class Player extends mutation.sim.Player {
         return output;
     }
 
+    //Sort the map by frequency.
     private static Map<String, Integer> sortByValue(Map<String, Integer> unsortMap) {
 
         List<Map.Entry<String, Integer>> list = new LinkedList<Map.Entry<String, Integer>>(unsortMap.entrySet());
@@ -176,6 +182,7 @@ public class Player extends mutation.sim.Player {
         return sortedMap;
     }
 
+    //Collect the data for right map and left map for this turn's mutation.
     public void collectData(Element[] diff) {
         List<Window> winList = new ArrayList<>();
         for(int i = 0; i < 1000; i++) {
@@ -212,6 +219,7 @@ public class Player extends mutation.sim.Player {
         addMap(cumLeft.get(output), left);
     }
 
+    //Get the left actions and store it in the left map.
     public void getLeftHelper(List<Window> winList, Map<String, Integer> s, String output) { 
         HashMap<Integer, Map<String, Integer>> map = new HashMap<>();
         int[] count = new int[19];
@@ -272,6 +280,7 @@ public class Player extends mutation.sim.Player {
 
     }
 
+    //Add all the possible left patterns and their frequency to old.
     public void addMap(Map<String, Integer> old, Map<String, Integer> n) {
         List<String> oldL = new LinkedList(old.keySet());
         List<Integer> oldR = new LinkedList(old.values());
@@ -283,6 +292,7 @@ public class Player extends mutation.sim.Player {
         }
     }
 
+    //We don't use it now.
     public String getLeft(Window w, String output) {
         String left = w.getAfterString();
         if(!LCSubStr(left, output, left.length(), output.length()).equals(output)) return "";
@@ -309,7 +319,7 @@ public class Player extends mutation.sim.Player {
     	}
     	return out;
     }
-    //if m <= 7
+    //if m <= 7, we don't use it now.
     public String getWinInt(List<Window> list){
         String output = list.get(0).getAfterString();
         for(Window w: list) {
@@ -320,7 +330,7 @@ public class Player extends mutation.sim.Player {
     	return output;
     }
 
-    //if m > 7
+    //Get the action and its frequency in the left map.
     public String getWinInt7(List<Window> list) {
         HashMap<String, Integer> map = new HashMap<>();
         int max = 0;
@@ -345,6 +355,7 @@ public class Player extends mutation.sim.Player {
         return output;
     }
 
+    //We don't use it.
     public String getLeftInt(List<Window> list){
         String output = list.get(0).getAfterString();
         for(Window w: list) {
@@ -355,6 +366,7 @@ public class Player extends mutation.sim.Player {
         return output;
     }
 
+    //We don't use it.
     public String combine(Set<Character> input) {
         String output = "";
         for(char c: input) {
@@ -363,6 +375,7 @@ public class Player extends mutation.sim.Player {
         return output;
     }
 
+    //Put semi colon in a part of pattern to make union.
     public String putSemi(String s) {
         String output = "";
         for(int i = 0; i < s.length(); i++) {
@@ -376,6 +389,7 @@ public class Player extends mutation.sim.Player {
         return w.mutEnd - w.mutStart + 1;
     }
 
+    //Get the difference of our input and output genome.
     public Element[] checkDifference(char[] input, char[] output) {
         Element[] diff = new Element[input.length];
         //beforeCounter = new int[4];
@@ -395,6 +409,7 @@ public class Player extends mutation.sim.Player {
         return diff;
     }
 
+    //Helper method to find out the common substring in X and Y. Use to find intersection.
     private String LCSubStr(String X, String Y, int m, int n)
     {
         int[][] LCSuff = new int[m + 1][n + 1];
